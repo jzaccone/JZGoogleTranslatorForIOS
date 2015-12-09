@@ -22,11 +22,12 @@ def translateSourceText(sourceText, target):
     return jsonObject['data']['translations'][0]['translatedText'].encode('utf-8')
 
 def translateLineInFile(line, target, outputTarget):
-    matchSource = re.search(r'\"(.*)\" =', line)
+    matchSource = re.search(r'\"(.*)\"(.*)\"(.*)\"', line)
     if matchSource:
-        sourceText = matchSource.group(1)
+        stringName = matchSource.group(1)
+        sourceText = matchSource.group(3)
         translation = translateSourceText(sourceText, target)
-        writeToFile(sourceText, translation, outputTarget)
+        writeToFile(stringName, translation, outputTarget)
 
 def clearContentsOfFile(target):
     fileName = "output/" + target + ".lproj/Localizable.strings"
